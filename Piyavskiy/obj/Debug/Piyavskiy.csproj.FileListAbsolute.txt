@@ -1,8 +1,7 @@
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.exe.config
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.exe
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.pdb
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.csproj.AssemblyReference.cache
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.csproj.SuggestedBindingRedirects.cache
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.csproj.CoreCompileInputs.cache
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.exe
-C:\Users\USER\Desktop\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.pdb
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.csproj.AssemblyReference.cache
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.csproj.CoreCompileInputs.cache
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.exe.config
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.exe
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\bin\Debug\Piyavskiy.pdb
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.exe
+C:\Users\masli\source\repos\Piyavskiy-master\Piyavskiy\obj\Debug\Piyavskiy.pdb
