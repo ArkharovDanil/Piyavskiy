@@ -9,18 +9,18 @@ namespace Piyavskiy
 
     internal class Algorithm
     {
-        
+        static string numberFunc = "11";
         double l;
         public double L
         {
             get
-            { 
+            {
                 return l;
             }
             set
             {
                 l = value;
-            } 
+            }
         }
         double e;
         public double E
@@ -59,88 +59,111 @@ namespace Piyavskiy
                 right = value;
             }
         }
-        
-        public  int Iteration(int STEP)
+
+        public int Iteration(int STEP)
         {
-            return (int)((right - left) * 10+STEP);
+            return (int)((right - left) * 10 + STEP);
         }
 
         public static double Function(double x)
         {
-            return (Math.Pow(x, 2));
-        }
-        public  double SearchMinoranta(int i,double[] X,double left,double right, double criterio,double L,int step)
-        {
-           // Console.WriteLine("Считаем миноранту");
-            double Max=double.MinValue;
-            double minoranta;
-            double x=left;
-           /* foreach (double t in X)
+            
+            switch (Algorithm.numberFunc)
             {
-                Console.WriteLine("это массив из подданых иксов {0}", t);
+                case "1": return (Math.Sin(x) + Math.Sin(10 * x / 3));
+                case "2": return (Math.Sin(x) + Math.Sin(10 * x / 3)+Math.Log10(x)-0.84*x-3);
+                case "3": return (Math.Sin(x) + Math.Sin(2 * x / 3));
+                case "4": return (x*Math.Sin(x));
+                case "5": return (2*Math.Cos(x)- Math.Cos(2*x));
+                case "6": return (Math.Cos(Math.Pow(x, 2)));
+                case "7": return ((Math.Pow(x, 2)-5*x+6)/(Math.Pow(x, 2)+1));
+                case "8": return ((1/6)*Math.Pow(x, 6)-(52/25)* Math.Pow(x, 5)+(71/10)* Math.Pow(x, 3)-(79/20)* Math.Pow(x, 2)-x+(1/10));
+                case "9": return (2* Math.Pow((x-3), 2)-Math.Exp(x*x/2));
+                case "10": return ( (Math.Sin(x)-x) * Math.Exp(-x * x / 2));
+                case "11": return (Math.Pow(x, 2));
+
+
+                default:
+                    return (Math.Pow(x, 2));
             }
-            Console.WriteLine("это константа липшица {0}", L);*/
+
+        }
+        public double SearchConstLipshitz()
+        {
+            return 0;
+        }
+        public void SearchMinoranta(out double minoranta, out double xminoranta, int i, double[] X, double left, double right, double criterio, double L, int step)
+        {
+            // Console.WriteLine("Считаем миноранту");
+            double x = left + (right - left) / (100 * step);
+            minoranta = Int32.MaxValue;
+            xminoranta = Int32.MinValue;
 
             while (x < right)
             {
+                double minorantaCur = double.MinValue;
                 //Console.WriteLine("Считаем миноранту тут {0}");
                 for (int j = 0; j < i; j++)
                 {
-                    minoranta = Algorithm.Function(X[j]) - L * Math.Abs(x - X[j]);
-                    //Console.WriteLine("на этом шаге посмотрим миноранты {0}", minoranta);
-                    if (minoranta <= criterio)
+
+                    double min = double.MinValue;
+                    min = Algorithm.Function(x) - L * Math.Abs(x - X[j]);
+                    //  Console.WriteLine("Посмотрим какое влияние оказывает константа Липшица:{0}", L * Math.Abs(x - X[j]));
+                    //  Console.WriteLine("на этом шаге посмотрим миноранты {0}", min);
+
+                    if (min > minorantaCur && min < criterio)
                     {
-                     //   Console.WriteLine("удовлетворяет критерию {0}", minoranta);
-                    }
-                    if (minoranta > Max && minoranta <= criterio)
-                    {
-                       // Console.WriteLine("Меняем миноранту тут {0}",minoranta);
-                        Max = minoranta;
+                        minorantaCur = min;
+                            // Console.WriteLine("Смена на {0}", minorantaCur);
                     }
                 }
-                x = x + (right-left)/(99*step);
-               // Console.ReadKey();
-            }
-            return Max;
-        }
-        public double SearchX(int i, double[] X, double left, double right,double criterio,double L,int step)
-        {
-           // Console.WriteLine("Считаем точку миноранты");
-            double Max = double.MinValue;
-            double minoranta;
-            double xminoranta=double.MinValue;
-            double x = left;
-            while (x < right)
-            {
-              //  Console.WriteLine("Считаем точку миноранты тут {0}");
-                for (int j = 0; j < i; j++)
+                 //Console.WriteLine("среди этих минорант мы выбрали большую по определению {0}", minorantaCur);
+                if (minorantaCur < minoranta)
                 {
-                    
-                   // Console.WriteLine("Меняем точку миноранты тут {0}", xminoranta);
-                    minoranta = Algorithm.Function(X[j]) - L * Math.Abs(x - X[j]);
-                    /*if (minoranta <= criterio)
-                    {
-                        Console.WriteLine("удовлетворяет критерию {0}", xminoranta);
-                    }*/
-                    if (minoranta > Max && minoranta<=criterio ) 
-                    {
-                        Max = minoranta;
-                        xminoranta = x;
-                       // Console.WriteLine("Меняем точку миноранты тут {0}",xminoranta);
-                    }
+                    xminoranta = x;
+                    minoranta = minorantaCur;
+                      //    Console.WriteLine("Меняем миноранту тут {0} и точку миноранты тоже {1}",minoranta,xminoranta);
+
+
                 }
-                x = x + (right - left) / (99 * step); 
+
+                x = x + (right - left) / (10 * step);
+                // Console.ReadKey();
             }
-            
-            return xminoranta;
+
+
+
+
         }
+
+
 
         public void Realization()
         {
-            double LeftBorder = -2;//левая граница компакта
-            double RightBorder = 2;//правая граница компакта
-            double ConstLipshitz =0.1;//константа липшица
-            double Epsilon = 0.0001;//точность
+            
+            
+            double LeftBorder = 2.7;//левая граница компакта
+            double RightBorder = 7.5;//правая граница компакта
+            double ConstLipshitz = 4.29;//константа липшица
+            double Epsilon = 0.01;//точность
+            switch (Algorithm.numberFunc)
+            {
+                case "1": LeftBorder = 2.7; RightBorder = 7.5; ConstLipshitz=4.29; break;
+                case "2": LeftBorder = 2.7; RightBorder = 7.5; ConstLipshitz =6; break;
+                case "3": LeftBorder = 3.1; RightBorder = 20.4; ConstLipshitz =1.7; break;
+                case "4": LeftBorder = 0; RightBorder = 10; ConstLipshitz =11; break;
+                case "5": LeftBorder = -1.57; RightBorder = 6.28; ConstLipshitz =3; break;
+                case "6": LeftBorder = 0; RightBorder = 6.26; ConstLipshitz =2.2; break;
+                case "7": LeftBorder =-5; RightBorder = 5; ConstLipshitz =6.5; break;
+                case "8": LeftBorder = -1.5; RightBorder = 11; ConstLipshitz = 16.2730013091864; break;
+                case "9": LeftBorder = -3; RightBorder = 3; ConstLipshitz =85; break;
+                case "10": LeftBorder = -10; RightBorder = 10; ConstLipshitz =1.3; break;
+                case "11": LeftBorder = -1; RightBorder = 1; ConstLipshitz =100; break;
+
+
+                default:
+                    return ;
+            }
             Algorithm Pyavskiy = new Algorithm();
             Pyavskiy.left = LeftBorder;
             Pyavskiy.right = RightBorder;
@@ -155,33 +178,37 @@ namespace Piyavskiy
             double[] x = new double[Pyavskiy.Iteration(step)];
             x[0] = Pyavskiy.Left;
             y[0] = Algorithm.Function(Pyavskiy.Left);
-            LocalMinimum = y[0];
-            //где-то здесь начнем пошаговый алгоритм
-            /*double[] y = new double[Pyavskiy.Iteration(step)];
-            double[] x = new double[Pyavskiy.Iteration(step)];*/
+            double maxL = 0, curL = 0;
+            double deltaDelta = 0;
             while (flag)
             {
-                
 
+                
 
                 for (int i = 1; i < Pyavskiy.Iteration(step); i++)
                 {
+                    
                     if (step == 1)
                     {
                         x[i] = x[i - 1] + (Pyavskiy.Right - Pyavskiy.Left) / (Pyavskiy.Iteration(step));
                         y[i] = Algorithm.Function(x[i]);
+                        curL = (y[i] - y[i - 1]) / (x[i] - x[i - 1]);
+                        if (curL > maxL)
+                        {
+                            maxL = curL;
+                        }
                     }
                     else
                     {
                         if (i == Pyavskiy.Iteration(step) - 1)
                         {
                             x[i] = xminoranta;
-                            y[i] = Algorithm.Function(x[i]);
+                            y[i] = minoranta;
                         }
 
 
                     }
-                   
+
                 }
                 for (int i = 0; i < Pyavskiy.Iteration(step); i++)
                 {
@@ -193,30 +220,42 @@ namespace Piyavskiy
                     }
                 }
 
-                for (int i=0; i<Pyavskiy.Iteration(step);i++)
+                for (int i = 0; i < Pyavskiy.Iteration(step); i++)
                 {
-                    Console.WriteLine("x[{0}] = {1} , y[{0}] = {2}", i, x[i], y[i]);
+                    //Console.WriteLine("x[{0}] = {1} , y[{0}] = {2}", i, x[i], y[i]);
                 }
-                    minoranta = SearchMinoranta(Pyavskiy.Iteration(step), x, Pyavskiy.Left, Pyavskiy.right,LocalMinimum,Pyavskiy.l,step);
-                    xminoranta = SearchX(Pyavskiy.Iteration(step), x, Pyavskiy.Left, Pyavskiy.right,LocalMinimum,Pyavskiy.l,step);
-                    Console.WriteLine("Найден миноранта  в точке  со значением {0} в точке {1}", minoranta,xminoranta);
-                    if (Math.Abs(LocalMinimum - minoranta) < Pyavskiy.e)
-                    {
-                        Console.WriteLine("Найден минимум{0} в точке {1} на шаге {2} ", LocalMinimum, LocalMinimumX, step);
+                if (step == 1)
+                {
+                   //  Console.WriteLine("мы нашли ту константу липшица,что нам надо {0}", maxL);
+                   //  Console.ReadKey();
+                  //  Pyavskiy.l = maxL;
+                }
+                SearchMinoranta(out minoranta, out xminoranta, Pyavskiy.Iteration(step), x, LocalMinimumX - (Pyavskiy.Right - Pyavskiy.Left) / (Pyavskiy.Iteration(step)), LocalMinimumX + (Pyavskiy.Right - Pyavskiy.Left) / (Pyavskiy.Iteration(step)), LocalMinimum, Pyavskiy.l, step);
+
+                // Console.WriteLine("Найден миноранта  в точке  со значением {0} в точке {1}", minoranta, xminoranta);
+                if (step==1)
+                {
+                     deltaDelta = LocalMinimum;
+                }
+                Console.WriteLine("на шаге {0},delta={1}, изменение локального минимума={2} ", step, LocalMinimum - minoranta, LocalMinimum  - deltaDelta) ;
+                
+                if (Math.Abs(LocalMinimum - minoranta) < Pyavskiy.e)
+                {
+                    Console.WriteLine("Найден минимум{0} в точке {1} на шаге {2},и то что я считаю минимумом на самом деле:{3} ", LocalMinimum, LocalMinimumX, step,Function(LocalMinimumX));
                     Console.ReadKey();
-                        flag = false ;
-                    }
-                    else
-                    {
-                    Console.WriteLine("НЕ Найден минимум{0} в точке {1} на шаге {2} ", LocalMinimum, LocalMinimumX, step);
+                    flag = false;
+                }
+                else
+                {
+                   // Console.WriteLine("НЕ Найден минимум{0} в точке {1} на шаге {2} ", LocalMinimum, LocalMinimumX, step);
                     step++;
-                    Console.ReadKey();
+                    //Console.ReadKey();
                     Array.Resize(ref x, Pyavskiy.Iteration(step));
                     Array.Resize(ref y, Pyavskiy.Iteration(step));
-                    }
-            
+                }
+
             }
         }
     }
-    
+
 }
